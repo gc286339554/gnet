@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\leaf_node">
+      <UniqueIdentifier>{0c127613-a501-4d1e-a885-0ba33b72bd60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gateway">
+      <UniqueIdentifier>{5bb4661b-14df-4e76-a9a7-f92eaf5ce869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom">
+      <UniqueIdentifier>{1c65427c-9d81-4f21-93d1-1d479bb98ae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\service">
+      <UniqueIdentifier>{9eee4c37-7266-4a27-89dc-eba3b8ea0be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\net">
+      <UniqueIdentifier>{57fb66ba-f14a-4058-b049-56451228639b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\leaf_node\leaf_node.cpp">
+      <Filter>src\leaf_node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gateway\gateway.cpp">
+      <Filter>src\gateway</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commom\net\client_session.cpp">
+      <Filter>src\commom\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commom\net\server_session.cpp">
+      <Filter>src\commom\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commom\net\io_service_holder.cpp">
+      <Filter>src\commom\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commom\service\service.cpp">
+      <Filter>src\commom\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\commom\service\service_mgr.cpp">
+      <Filter>src\commom\service</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\leaf_node\leaf_node.h">
+      <Filter>src\leaf_node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gateway\gateway.h">
+      <Filter>src\gateway</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\gnet_def.h">
+      <Filter>src\commom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\net_packet.hpp">
+      <Filter>src\commom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\singleton.h">
+      <Filter>src\commom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\pre_header.h">
+      <Filter>src\commom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\client_session.h">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\server_session.h">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\server_session_mgr.hpp">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\server_acceptor.hpp">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\io_service_holder.h">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\service\service.h">
+      <Filter>src\commom\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\service\service_mgr.h">
+      <Filter>src\commom\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\base_session.hpp">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\service\service_msg.hpp">
+      <Filter>src\commom\service</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\doc\设计目标.txt" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+gnet
+1.一个高可复用的网络库
+2.基于bosst::asio 或者 系统原生socket 基础
+3.实现 clientNet、serverNet
+4.简单易用，性能高效，拿到就可以用
+5.分布式易用，map状服务器系统
+6.配置文件，基于lua脚本
+7.客户端session 和 服务端 session 上面 还应该抽象一层公共的 net_session，
+用来承载公共的函数，如read，send，closs，timeout之类的
+8.采用类似于skynet的actor模型，但是抛弃service之间得阻塞调用，取消携程

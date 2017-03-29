@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\commom\net\client_session.cpp" />
+    <ClCompile Include="..\..\src\commom\net\io_service_holder.cpp" />
+    <ClCompile Include="..\..\src\commom\net\server_session.cpp" />
+    <ClCompile Include="..\..\src\commom\service\service.cpp" />
+    <ClCompile Include="..\..\src\commom\service\service_mgr.cpp" />
+    <ClCompile Include="..\..\src\gateway\gateway.cpp" />
+    <ClCompile Include="..\..\src\leaf_node\leaf_node.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\commom\gnet_def.h" />
+    <ClInclude Include="..\..\src\commom\net\base_session.hpp" />
+    <ClInclude Include="..\..\src\commom\net\client_session.h" />
+    <ClInclude Include="..\..\src\commom\net\io_service_holder.h" />
+    <ClInclude Include="..\..\src\commom\net\net_packet.hpp" />
+    <ClInclude Include="..\..\src\commom\net\server_acceptor.hpp" />
+    <ClInclude Include="..\..\src\commom\net\server_session.h" />
+    <ClInclude Include="..\..\src\commom\net\server_session_mgr.hpp" />
+    <ClInclude Include="..\..\src\commom\pre_header.h" />
+    <ClInclude Include="..\..\src\commom\service\service.h" />
+    <ClInclude Include="..\..\src\commom\service\service_mgr.h" />
+    <ClInclude Include="..\..\src\commom\service\service_msg.hpp" />
+    <ClInclude Include="..\..\src\commom\singleton.h" />
+    <ClInclude Include="..\..\src\gateway\gateway.h" />
+    <ClInclude Include="..\..\src\leaf_node\leaf_node.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\doc\设计目标.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8C6D6549-FBAA-4226-9B7E-600862C55ACC}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>gnet</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../lib</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

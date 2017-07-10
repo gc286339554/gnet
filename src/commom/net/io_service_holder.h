@@ -3,6 +3,7 @@
 #include "asio/asio.hpp"
 #include "../singleton.h"
 
+
 namespace gnet {
 /*
 此io_service一般用于网络io，可以复用为其他timer。

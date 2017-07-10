@@ -1,8 +1,9 @@
 #pragma once
 #include "../pre_header.h"
 #include "asio/asio.hpp"
-#include "net_packet.hpp"
+#include "data_packet_pool.hpp"
 #include "io_service_holder.h"
+#include "opcode.h"
 
 namespace gnet {
 #define BUF_READ_SIZE (8*1024)
@@ -18,11 +19,12 @@ protected:
 	uint32									m_temp_size = 0;
 	uint32									m_session_id = 0;
 	uint32									m_timeout = 10;
-	net_packet*								m_net_packet_p = nullptr;
-	std::list<net_packet*>					m_send_list;
+	data_packet*							m_data_packet_p = nullptr;
+	std::list<data_packet*>					m_send_list;
 	asio::deadline_timer					m_timeout_monitor;
+	std::atomic_bool						m_timeout_monitor_finish = true;
 public:
-	virtual void post_net_packet_handler() = 0;
+	virtual void post_data_packet_handler() = 0;
 	virtual void timeout_check() = 0;
 
 	base_session(uint32 timeout)
@@ -35,35 +37,52 @@ public:
 	
 	virtual ~base_session()
 	{
-		if (m_net_packet_p)
+		clear_data_packet();
+	}
+	void clear_data_packet()
+	{
+		if (m_data_packet_p)
 		{
-			delete m_net_packet_p;
+			g_data_packet_pool.put_data_packet(m_data_packet_p);
+			m_data_packet_p = nullptr;
+			m_temp_size = 0;
+			m_is_sending = false;
 		}
 
-		for (auto it = m_send_list.begin(); it != m_send_list.end(); it++)
-		{
-			delete *it;
-		}
-	}
-	virtual void start()
-	{
-		m_last_packet_time = std::chrono::steady_clock::now();
-		m_session_id = m_socket.native();
-		//m_socket.non_blocking(true);
-		//m_socket.set_option(asio::ip::tcp::no_delay(true));
-		m_last_packet_time = std::chrono::steady_clock::now();//重新计时
-		timeout_check();
 		do
 		{
 			std::unique_lock<std::mutex> lock(m_send_list_lock);
-			m_is_sending = false;
-			m_send_list.clear();
+			if (!m_send_list.empty())
+			{
+				for (auto it = m_send_list.begin(); it != m_send_list.end(); it++)
+				{
+					g_data_packet_pool.put_data_packet(*it);
+				}
+				m_send_list.clear();
+			}
 		} while (0);
+	}
+	virtual void start()
+	{
+		init_session_id();
+		m_last_packet_time = std::chrono::steady_clock::now();//重新计时
+		timeout_check();
+		clear_data_packet();
 		do_read();
 	}
 	virtual void stop()
 	{
+		do 
+		{
+			std::unique_lock<std::mutex> lock(m_send_list_lock);
+			for (data_packet* pdata : m_send_list)
+			{
+				g_data_packet_pool.put_data_packet(pdata);
+			}
+			m_send_list.clear();
+		} while (0);
 		m_timeout_monitor.cancel();
+		m_timeout_monitor_finish = false;
 		close_socket();
 	}
 	uint32 get_session_id()
@@ -114,13 +133,13 @@ public:
 				std::placeholders::_1,
 				std::placeholders::_2));
 	}
-	void format_net_packet()
+	void format_data_packet()
 	{
 		if (m_temp_size > 0)
 		{
-			if (!m_net_packet_p)
+			if (!m_data_packet_p)
 			{
-				if (m_temp_size >= DATA_HEAD_LEN)
+				if (m_temp_size >= (DATA_HEAD_LEN + DATA_OP_LEN))
 				{
 					uint32 len = *((uint32*)m_buf_read);
 					if (len > DATA_MAX_LEN)
@@ -128,8 +147,9 @@ public:
 						stop();
 						return;
 					}
-					m_net_packet_p = new gnet::net_packet(len);
-					m_net_packet_p->put_buff(m_buf_read, std::min(len, m_temp_size));
+					m_data_packet_p = g_data_packet_pool.get_data_packet();
+					m_data_packet_p->append(m_buf_read, std::min(len, m_temp_size));
+					m_data_packet_p->calculate_data_len_when_read();
 
 					if (len < m_temp_size)
 					{
@@ -144,8 +164,8 @@ public:
 			}
 			else
 			{
-				uint32 leftData = m_net_packet_p->get_buff_len() - m_net_packet_p->get_data_pos();
-				m_net_packet_p->put_buff(m_buf_read, std::min(leftData, m_temp_size));
+				uint32 leftData = m_data_packet_p->get_data_len() - m_data_packet_p->get_data_pos();
+				m_data_packet_p->append(m_buf_read, std::min(leftData, m_temp_size));
 
 				if (leftData < m_temp_size)
 				{
@@ -159,25 +179,25 @@ public:
 			}
 		}
 	}
-	void send_heat_beat()
+	void send_heart_beat()
 	{
 		static int index = 0;
-		gnet::net_packet* packet = new gnet::net_packet();	//构造心跳包
-		packet->put_uint32(0);
-		packet->put_uint32(GNET_OP_HEART_BEAT_PING_PONG);
+		data_packet* packet = g_data_packet_pool.get_data_packet();	//构造心跳包
+		packet->start_write();
+		packet->set_op(OP_HEART_BEAT_PING_PONG);
 		packet->put_uint32(index++);
 		packet->flip();
 		do_write(packet);
 	}
-	bool post_net_packet()
+	bool post_data_packet()
 	{
-		if (m_net_packet_p && (m_net_packet_p->get_buff_len() == m_net_packet_p->get_data_pos()))
+		if (m_data_packet_p && (m_data_packet_p->get_data_len() == m_data_packet_p->get_data_pos()))
 		{// full data
-			m_net_packet_p->flip();
+			m_data_packet_p->flip();
 			//post data to right place
-			post_net_packet_handler();
-			//delete m_net_packet_p;  由消息处理着负责销毁
-			m_net_packet_p = NULL;
+			post_data_packet_handler();
+			//delete m_data_packet_p;  由消息处理着负责销毁
+			m_data_packet_p = NULL;
 			return true;
 		}
 		return false;
@@ -193,8 +213,8 @@ public:
 				m_temp_size = bytes_read + m_temp_size;
 				do
 				{
-					format_net_packet();
-				} while (post_net_packet());
+					format_data_packet();
+				} while (post_data_packet());
 
 				do_read();
 			}
@@ -207,11 +227,11 @@ public:
 			stop();
 		}
 	}
-	void do_write(net_packet* packet)
+	void do_write(data_packet* packet)
 	{
-		if (!m_socket.is_open())
+		if (is_timeout() || !m_socket.is_open())//大量socket闪断时，is_open可能检测不到
 		{
-			delete packet;
+			g_data_packet_pool.put_data_packet(packet);
 			return;
 		}
 		std::unique_lock<std::mutex> lock(m_send_list_lock);
@@ -231,9 +251,9 @@ public:
 			m_send_list.push_back(packet);
 		}
 	}
-	void handle_write(const std::error_code& error, size_t size_, gnet::net_packet* lastPacket)
+	void handle_write(const std::error_code& error, size_t size_, gnet::data_packet* lastPacket)
 	{
-		delete lastPacket;
+		g_data_packet_pool.put_data_packet(lastPacket);
 
 		if (!error)
 		{
@@ -242,7 +262,7 @@ public:
 			if (!m_send_list.empty())
 			{
 				m_is_sending = true;
-				gnet::net_packet* packet = *(m_send_list.begin()); m_send_list.pop_front();
+				gnet::data_packet* packet = *(m_send_list.begin()); m_send_list.pop_front();
 				asio::async_write(m_socket,
 					asio::buffer((*packet).get_buff(), (*packet).get_data_len()),
 					std::bind(&base_session::handle_write,
@@ -282,7 +302,7 @@ public:
 		}
 		return false;
 	}
-
+	void init_session_id() { m_session_id = m_socket.native(); };
 };
 
 };

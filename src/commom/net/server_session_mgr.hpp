@@ -18,7 +18,7 @@ public:
 		std::unique_lock<std::mutex> lock(sessionListLock);
 		for (auto ins : sessionList)
 		{
-			ins.second->stop();
+			ins.second->close_socket();
 		}
 		sessionList.clear();
 	}
@@ -29,6 +29,7 @@ public:
 	}
 	void socket_close(std::shared_ptr<server_session>& session)
 	{
+		m_session_close_handler(session->get_session_id());
 		std::unique_lock<std::mutex> lock(sessionListLock);
 		auto it = sessionList.find(session->get_session_id());
 		if (it != sessionList.end())
@@ -44,7 +45,36 @@ public:
 			return it->second;
 		return std::shared_ptr<server_session>();
 	}
+	void set_session_close_handler(std::function<void(uint32)>& handler)
+	{
+		m_session_close_handler = handler;
+	}
+	void kick_session(uint32 sid)
+	{
+		std::unordered_map<uint32, std::shared_ptr<server_session> >::iterator iter;
+		bool find = false;
+		do 
+		{
+			std::unique_lock<std::mutex> lock(sessionListLock);
+			iter = sessionList.find(sid);
+			if (iter != sessionList.end())
+			{
+				find = true;
+			}
+		} while (0);
+		if (find)
+		{
+			auto sess = iter->second;
+			g_io_service.post(
+			[sess]()
+			{
+				sess->close_socket();
+			}
+			);
+		}
+	}
 private:
+	std::function<void(uint32)> m_session_close_handler;
 	std::unordered_map<uint32, std::shared_ptr<server_session> >	sessionList;
 	std::mutex			sessionListLock;
 };

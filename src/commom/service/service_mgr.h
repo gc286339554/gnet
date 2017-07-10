@@ -16,7 +16,7 @@ namespace gnet {
 		service_mgr();
 		virtual ~service_mgr();
 
-		void init(uint8 work_thread_count);
+		void init(uint8 work_thread_count = 0);
 		void start();
 		void stop();
 		bool add_service(std::shared_ptr<service> service_sp);
@@ -26,8 +26,6 @@ namespace gnet {
 	private:
 		std::mutex	m_service_name_map_lock;
 		std::map<std::string, service_info> m_service_name_map;
-		std::mutex	m_service_init_list_lock;
-		std::list<service_info> m_service_init_list;//需要執行init的service
 
 		std::vector<std::shared_ptr<std::thread> >	m_work_thread_list;
 		std::vector<std::vector<std::shared_ptr<service> > > m_service_list;

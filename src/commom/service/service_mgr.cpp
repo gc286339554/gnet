@@ -1,10 +1,17 @@
 #include "service_mgr.h"
+#include "../io_service_holder.h"
+#include "../3rd/performance/execute_timer.hpp"
 
 gnet::service_mgr::service_mgr()
 {
+	gnet::data_packet_pool::newInstance();
+	gnet::io_service_holder::newInstance();
+	gnet::io_service_holder::instance()->start_net_work_threads();
 }
 gnet::service_mgr::~service_mgr()
 {
+	gnet::io_service_holder::deleteInstance();
+	gnet::data_packet_pool::deleteInstance();
 }
 void gnet::service_mgr::init(uint8 work_thread_count)
 {
@@ -67,14 +74,9 @@ bool gnet::service_mgr::add_service(std::shared_ptr<service> service_sp)
 			tmp_service_info.m_service_id = service_id_index++;
 			tmp_service_info.m_service_name = service_sp->get_service_name();
 			tmp_service_info.m_service_sp = service_sp;
+			service_sp->set_service_id(tmp_service_info.m_service_id);
 			m_service_name_map.insert(std::make_pair(service_sp->get_service_name(), tmp_service_info));
 		}
-	} while (0);
-
-	do
-	{
-		std::lock_guard<std::mutex> lock(m_service_init_list_lock);
-		m_service_init_list.push_back(tmp_service_info);//需要執行init的service
 	} while (0);
 
 	static uint32 target_work_thread = 0;//线程负载均衡，将service均分到各个work线程
@@ -134,40 +136,38 @@ bool gnet::service_mgr::remove_service(uint32 service_id)
 void gnet::service_mgr::work_thread_handler(uint8 work_thread_index_param)
 {
 	uint8 work_thread_index = work_thread_index_param;
-	
+	std::vector<std::shared_ptr<service> > service_list_tmp;
+	std::chrono::steady_clock::time_point last_update_time_stamp = std::chrono::steady_clock::now();
+	std::chrono::milliseconds dura(1);
+	uint64 ms_delay;
 	while (m_is_run)
 	{
-		///////////////////////init begin////////////////////////////
-		std::list<service_info> service_init_list_tmp;
-		do
-		{
-			std::lock_guard<std::mutex> lock(m_service_init_list_lock);
-			std::swap(service_init_list_tmp, m_service_init_list);
-		} while (0);
-		for (service_info& service_info_tmp : service_init_list_tmp)
-		{
-			service_info_tmp.m_service_sp->init();
-		}
-		/////////////////////////init end/////////////////////////////
-
 		///////////////////////update begin////////////////////////////
-		std::vector<std::shared_ptr<service> > service_list_tmp;
+		
+		service_list_tmp.clear();
 		do
 		{
 			std::lock_guard<std::mutex> lock(*(m_service_lock[work_thread_index]).get());
 			service_list_tmp = m_service_list[work_thread_index];
 		} while (0);
 
+		ms_delay = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - last_update_time_stamp).count();
+		last_update_time_stamp = std::chrono::steady_clock::now();
 		for (std::shared_ptr<service>& service : service_list_tmp)
 		{
+			//init 
+			if (service->need_init())
+			{
+				service->init();
+				service->set_inited(true);
+			}
 			//消息处理
 			service->deal_message();
 			//时间片分发
-			service->update();
+			service->update(ms_delay);
 		}
 		/////////////////////////update end/////////////////////////////
 
-		std::chrono::milliseconds dura(1);
 		std::this_thread::sleep_for(dura);
 	}
 }

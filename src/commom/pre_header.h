@@ -17,5 +17,9 @@
 #include <chrono>
 #include <stdio.h>
 #include <functional>
+#include <atomic>
+#include <assert.h>
+
+#define SAFE_DEL(x) do { delete x; x = nullptr;} while (0);
 
 

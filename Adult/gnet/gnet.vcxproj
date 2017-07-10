@@ -11,33 +11,125 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\logging.cc" />
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\raw_logging.cc" />
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\utilities.cc" />
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\vlog_is_on.cc" />
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\windows\port.cc" />
+    <ClCompile Include="..\..\src\3rd\log\glog.cpp" />
+    <ClCompile Include="..\..\src\3rd\lua\lapi.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lauxlib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lbaselib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lbitlib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lcode.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lcorolib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lctype.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ldblib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ldebug.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ldo.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ldump.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lfunc.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lgc.c" />
+    <ClCompile Include="..\..\src\3rd\lua\linit.c" />
+    <ClCompile Include="..\..\src\3rd\lua\liolib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\llex.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lmathlib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lmem.c" />
+    <ClCompile Include="..\..\src\3rd\lua\loadlib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lobject.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lopcodes.c" />
+    <ClCompile Include="..\..\src\3rd\lua\loslib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lparser.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lstate.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lstring.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lstrlib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ltable.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ltablib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\ltm.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lundump.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lutf8lib.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lvm.c" />
+    <ClCompile Include="..\..\src\3rd\lua\lzio.c" />
+    <ClCompile Include="..\..\src\3rd\lua_tinker\lua_tinker.cpp" />
+    <ClCompile Include="..\..\src\3rd\lua_tinker\lua_tinker_ex.cpp" />
+    <ClCompile Include="..\..\src\3rd\mysql\mysql_connection.cpp" />
+    <ClCompile Include="..\..\src\3rd\mysql\mysql_rst.cpp" />
     <ClCompile Include="..\..\src\commom\net\client_session.cpp" />
     <ClCompile Include="..\..\src\commom\net\io_service_holder.cpp" />
     <ClCompile Include="..\..\src\commom\net\server_session.cpp" />
     <ClCompile Include="..\..\src\commom\service\service.cpp" />
     <ClCompile Include="..\..\src\commom\service\service_mgr.cpp" />
-    <ClCompile Include="..\..\src\gateway\gateway.cpp" />
-    <ClCompile Include="..\..\src\leaf_node\leaf_node.cpp" />
+    <ClCompile Include="..\..\src\extend\game_gate\game_gate.cpp" />
+    <ClCompile Include="..\..\src\extend\gateway\gateway.cpp" />
+    <ClCompile Include="..\..\src\extend\leaf_node\leaf_node.cpp" />
+    <ClCompile Include="..\..\src\extend\lua_service\lua_service.cpp" />
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_base_server.cpp" />
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_base_server_logic.cpp" />
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_gate_service.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\3rd\log\glog.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lapi.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lauxlib.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lcode.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lctype.h" />
+    <ClInclude Include="..\..\src\3rd\lua\ldebug.h" />
+    <ClInclude Include="..\..\src\3rd\lua\ldo.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lfunc.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lgc.h" />
+    <ClInclude Include="..\..\src\3rd\lua\llex.h" />
+    <ClInclude Include="..\..\src\3rd\lua\llimits.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lmem.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lobject.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lopcodes.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lparser.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lprefix.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lstate.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lstring.h" />
+    <ClInclude Include="..\..\src\3rd\lua\ltable.h" />
+    <ClInclude Include="..\..\src\3rd\lua\ltm.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lua.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lua.hpp" />
+    <ClInclude Include="..\..\src\3rd\lua\luaconf.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lualib.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lundump.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lvm.h" />
+    <ClInclude Include="..\..\src\3rd\lua\lzio.h" />
+    <ClInclude Include="..\..\src\3rd\lua_tinker\lua_tinker.h" />
+    <ClInclude Include="..\..\src\3rd\lua_tinker\lua_tinker_ex.h" />
+    <ClInclude Include="..\..\src\3rd\mysql\mysql_connection.h" />
+    <ClInclude Include="..\..\src\3rd\mysql\mysql_rst.h" />
+    <ClInclude Include="..\..\src\3rd\performance\execute_timer.hpp" />
     <ClInclude Include="..\..\src\commom\gnet_def.h" />
     <ClInclude Include="..\..\src\commom\net\base_session.hpp" />
     <ClInclude Include="..\..\src\commom\net\client_session.h" />
     <ClInclude Include="..\..\src\commom\net\io_service_holder.h" />
-    <ClInclude Include="..\..\src\commom\net\net_packet.hpp" />
+    <ClInclude Include="..\..\src\commom\net\data_packet.hpp" />
+    <ClInclude Include="..\..\src\commom\net\data_packet_pool.hpp" />
     <ClInclude Include="..\..\src\commom\net\server_acceptor.hpp" />
     <ClInclude Include="..\..\src\commom\net\server_session.h" />
     <ClInclude Include="..\..\src\commom\net\server_session_mgr.hpp" />
+    <ClInclude Include="..\..\src\commom\opcode.h" />
     <ClInclude Include="..\..\src\commom\pre_header.h" />
     <ClInclude Include="..\..\src\commom\service\service.h" />
     <ClInclude Include="..\..\src\commom\service\service_mgr.h" />
     <ClInclude Include="..\..\src\commom\service\service_msg.hpp" />
     <ClInclude Include="..\..\src\commom\singleton.h" />
-    <ClInclude Include="..\..\src\gateway\gateway.h" />
-    <ClInclude Include="..\..\src\leaf_node\leaf_node.h" />
+    <ClInclude Include="..\..\src\extend\game_gate\game_gate.h" />
+    <ClInclude Include="..\..\src\extend\gateway\gateway.h" />
+    <ClInclude Include="..\..\src\extend\leaf_node\leaf_node.h" />
+    <ClInclude Include="..\..\src\extend\lua_service\lua_service.h" />
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_base_server.h" />
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_base_server_logic.h" />
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_gate_service.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\doc\设计目标.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\3rd\lua\Makefile" />
+    <None Include="..\..\src\extend\lua_service\lua\data_packet.lua" />
+    <None Include="..\..\src\extend\lua_service\lua\msg_util.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8C6D6549-FBAA-4226-9B7E-600862C55ACC}</ProjectGuid>
@@ -78,9 +170,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GOOGLE_GLOG_DLL_DECL=;_CRT_SECURE_NO_WARNINGS;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;..\..\src\3rd\;..\..\src\3rd\mysql\;..\..\src\3rd\log\glog-0.3.3\src\windows\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

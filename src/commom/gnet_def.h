@@ -25,6 +25,6 @@ typedef float					f32;
 typedef double					f64;
 //type def end
 
-#define GNET_OP_HEART_BEAT_PING_PONG	(0xffffffff)
 #define INVALID_SERVICE_ID				(0xffffffff)
+
 

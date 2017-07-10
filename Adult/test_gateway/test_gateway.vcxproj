@@ -17,6 +17,7 @@
     <ProjectGuid>{C4C59764-AA61-4DFE-9BA8-2E2BF311AEBC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>test_gateway</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -44,6 +45,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../bin/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -54,14 +56,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GOOGLE_GLOG_DLL_DECL=;_CRT_SECURE_NO_WARNINGS;ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;..\..\src\3rd\;..\..\src\3rd\log\glog-0.3.3\src\windows\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>../../lib/boost_1_60/libboost_date_time-vc140-mt-gd-1_60.lib;../../lib/gnet.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../../bin/$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

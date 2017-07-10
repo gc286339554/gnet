@@ -27,7 +27,8 @@ public:
 	{
 		if (!error)
 		{
-			new_session->set_server_session_msg_handler(m_server_session_msg_handler);
+			new_session->set_net_msg_handler(m_net_msg_handler);
+			new_session->init_session_id();
 			new_session->set_server_session_mgr(m_server_session_mgr_sp);
 			new_session->start(); 
 
@@ -50,14 +51,14 @@ public:
 			   // An error occurred.
 		}
 	}
-	void set_server_session_msg_handler(std::function<void(net_packet*, uint32)>& handler)
+	void set_net_msg_handler(std::function<void(data_packet*, uint32)>& handler)
 	{
-		m_server_session_msg_handler = handler;
+		m_net_msg_handler = handler;
 	}
 private:
 	asio::ip::tcp::acceptor	m_acceptor;
 	std::shared_ptr<server_session_mgr> m_server_session_mgr_sp;
-	std::function<void(net_packet*, uint32)> m_server_session_msg_handler;
+	std::function<void(data_packet*, uint32)> m_net_msg_handler;
 	uint32 m_timeout;
 };
 };

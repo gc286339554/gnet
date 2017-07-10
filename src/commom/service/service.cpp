@@ -12,28 +12,28 @@ void gnet::service::init()
 {
 }
 void gnet::service::deal_message()
-{
-	std::queue<std::shared_ptr<service_msg> >	service_msg_queue_tmp;
+{	
 	do
 	{
 		std::lock_guard<std::mutex> lock(m_service_msg_queue_lock);
-		std::swap(service_msg_queue_tmp, m_service_msg_queue);
+		if(!m_service_msg_queue.empty()) std::swap(m_service_msg_queue_tmp, m_service_msg_queue);
 	} while (0);
+	
 	do
 	{
-		if (service_msg_queue_tmp.empty())
+		if (m_service_msg_queue_tmp.empty())
 		{
 			break;
 		}
 		else
 		{
-			std::shared_ptr<service_msg> msg = service_msg_queue_tmp.front();
-			service_msg_queue_tmp.pop();
-			message_handler(msg);
+			std::shared_ptr<service_msg> msg = m_service_msg_queue_tmp.front();
+			m_service_msg_queue_tmp.pop();
+			service_msg_handler(msg);
 		}
 	} while (true);
 }
-void gnet::service::update()
+void gnet::service::update(uint32 ms_delay)
 {
 }
 void gnet::service::set_service_mgr(gnet::service_mgr* service_mgr_p)

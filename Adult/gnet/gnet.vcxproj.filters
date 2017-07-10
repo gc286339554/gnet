@@ -5,12 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="src\leaf_node">
-      <UniqueIdentifier>{0c127613-a501-4d1e-a885-0ba33b72bd60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\gateway">
-      <UniqueIdentifier>{5bb4661b-14df-4e76-a9a7-f92eaf5ce869}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\commom">
       <UniqueIdentifier>{1c65427c-9d81-4f21-93d1-1d479bb98ae6}</UniqueIdentifier>
     </Filter>
@@ -20,14 +14,50 @@
     <Filter Include="src\commom\net">
       <UniqueIdentifier>{57fb66ba-f14a-4058-b049-56451228639b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\3rd">
+      <UniqueIdentifier>{ff6f485a-d205-4625-8ebf-89cba2bf66d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\lua">
+      <UniqueIdentifier>{28bae2d9-78f3-4d71-b9f0-72e20343e043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\xml">
+      <UniqueIdentifier>{f5d71eba-b7c2-423b-ac73-bf7f15249c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend">
+      <UniqueIdentifier>{933a65f3-d940-46aa-a27c-df1249d9bc61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\gateway">
+      <UniqueIdentifier>{5bb4661b-14df-4e76-a9a7-f92eaf5ce869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\leaf_node">
+      <UniqueIdentifier>{0c127613-a501-4d1e-a885-0ba33b72bd60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\lua_service">
+      <UniqueIdentifier>{cca236da-9266-4151-831b-af4800e6fb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\lua_tinker">
+      <UniqueIdentifier>{48fc4572-048e-4461-ad3c-4c9d54071d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\performance">
+      <UniqueIdentifier>{8a6eca8c-2ef3-47ab-b283-657c4aba27f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\lua_service\lua">
+      <UniqueIdentifier>{34c0d5ea-3227-4774-9f5d-61d5c7663d91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\mysql_base_server">
+      <UniqueIdentifier>{74162192-0940-410f-adc8-e39463dde988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\mysql">
+      <UniqueIdentifier>{fac8306f-4076-4a30-8260-43d2119a7a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rd\log">
+      <UniqueIdentifier>{518be002-b7df-4fb5-99b8-286763e572c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\commom\extend\game_gate">
+      <UniqueIdentifier>{0978da7b-e5cf-4947-affb-4a93ad6e6b33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\leaf_node\leaf_node.cpp">
-      <Filter>src\leaf_node</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\gateway\gateway.cpp">
-      <Filter>src\gateway</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\commom\net\client_session.cpp">
       <Filter>src\commom\net</Filter>
     </ClCompile>
@@ -43,18 +73,159 @@
     <ClCompile Include="..\..\src\commom\service\service_mgr.cpp">
       <Filter>src\commom\service</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\extend\gateway\gateway.cpp">
+      <Filter>src\commom\extend\gateway</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\leaf_node\leaf_node.cpp">
+      <Filter>src\commom\extend\leaf_node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lapi.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lauxlib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lbaselib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lbitlib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lcode.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lcorolib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lctype.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ldblib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ldebug.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ldo.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ldump.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lfunc.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lgc.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\linit.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\liolib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\llex.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lmathlib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lmem.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\loadlib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lobject.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lopcodes.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\loslib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lparser.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lstate.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lstring.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lstrlib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ltable.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ltablib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\ltm.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lundump.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lutf8lib.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lvm.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua\lzio.c">
+      <Filter>src\3rd\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\lua_service\lua_service.cpp">
+      <Filter>src\commom\extend\lua_service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua_tinker\lua_tinker.cpp">
+      <Filter>src\3rd\lua_tinker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\lua_tinker\lua_tinker_ex.cpp">
+      <Filter>src\3rd\lua_tinker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_base_server.cpp">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_base_server_logic.cpp">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\mysql_base_server\mysql_gate_service.cpp">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\mysql\mysql_rst.cpp">
+      <Filter>src\3rd\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\mysql\mysql_connection.cpp">
+      <Filter>src\3rd\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\logging.cc">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\raw_logging.cc">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\utilities.cc">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\vlog_is_on.cc">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog-0.3.3\src\windows\port.cc">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extend\game_gate\game_gate.cpp">
+      <Filter>src\commom\extend\game_gate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3rd\log\glog.cpp">
+      <Filter>src\3rd\log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\leaf_node\leaf_node.h">
-      <Filter>src\leaf_node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\gateway\gateway.h">
-      <Filter>src\gateway</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\commom\gnet_def.h">
-      <Filter>src\commom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\commom\net\net_packet.hpp">
       <Filter>src\commom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\commom\singleton.h">
@@ -90,8 +261,145 @@
     <ClInclude Include="..\..\src\commom\service\service_msg.hpp">
       <Filter>src\commom\service</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\extend\gateway\gateway.h">
+      <Filter>src\commom\extend\gateway</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\leaf_node\leaf_node.h">
+      <Filter>src\commom\extend\leaf_node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lapi.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lauxlib.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lcode.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lctype.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\ldebug.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\ldo.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lfunc.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lgc.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\llex.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\llimits.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lmem.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lobject.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lopcodes.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lparser.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lprefix.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lstate.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lstring.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\ltable.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\ltm.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lua.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lua.hpp">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\luaconf.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lualib.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lundump.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lvm.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua\lzio.h">
+      <Filter>src\3rd\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\lua_service\lua_service.h">
+      <Filter>src\commom\extend\lua_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua_tinker\lua_tinker.h">
+      <Filter>src\3rd\lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\lua_tinker\lua_tinker_ex.h">
+      <Filter>src\3rd\lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\performance\execute_timer.hpp">
+      <Filter>src\3rd\performance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_base_server.h">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_base_server_logic.h">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\mysql_base_server\mysql_gate_service.h">
+      <Filter>src\commom\extend\mysql_base_server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\data_packet.hpp">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\net\data_packet_pool.hpp">
+      <Filter>src\commom\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\mysql\mysql_rst.h">
+      <Filter>src\3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\mysql\mysql_connection.h">
+      <Filter>src\3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extend\game_gate\game_gate.h">
+      <Filter>src\commom\extend\game_gate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rd\log\glog.h">
+      <Filter>src\3rd\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\commom\opcode.h">
+      <Filter>src\commom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\doc\设计目标.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\3rd\lua\Makefile">
+      <Filter>src\3rd\lua</Filter>
+    </None>
+    <None Include="..\..\src\extend\lua_service\lua\data_packet.lua">
+      <Filter>src\commom\extend\lua_service\lua</Filter>
+    </None>
+    <None Include="..\..\src\extend\lua_service\lua\msg_util.lua">
+      <Filter>src\commom\extend\lua_service\lua</Filter>
+    </None>
   </ItemGroup>
 </Project>

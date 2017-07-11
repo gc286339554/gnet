@@ -10,30 +10,23 @@ class data_packet
 {
 	private:
 		uint8* m_buff;
-		uint32 m_pos;
+		uint32 m_pos = 0;
 		uint32 m_buff_len;
 		uint32 m_data_len;
 		uint32 m_id;
-		uint32 m_op;
-		bool   m_using;
+		uint32 m_op = 0;
+		bool   m_using = true;
 		std::map<std::string, std::string> m_extend_data;
 	public:
 		data_packet(uint32 size = 1024)
 		{
-			m_pos = 0;
 			m_buff_len = size;
 			m_buff = new uint8[size];
 			memset(m_buff, 0, size);
-			m_using = true;
-			m_op = 0;
 			static uint32 id = 0;
 			m_id = id++;
 		}
-
-		~data_packet()
-		{
-			SAFE_DEL(m_buff);
-		}
+		~data_packet(){	SAFE_DEL(m_buff);}
 	public:
 		const uint8* get_buff() { return m_buff; }
 		uint32 get_buff_len() { return m_buff_len; }
@@ -42,47 +35,43 @@ class data_packet
 		uint32 get_data_len() { return m_data_len; }
 		uint32 get_data_pos() {	return m_pos; }
 		uint32 get_op() { return m_op; }
-		void set_op(uint32 op) { m_op = op; }
+		data_packet& set_op(uint32 op) { m_op = op; return *this;}
 		
-		void  flip()
-		{//此处需要添加  读写模式切换，后续优化
+		data_packet& calculate_data_len_when_read()
+		{
+			m_data_len = *((uint32*)m_buff);
+			m_op = *((uint32*)(m_buff + DATA_HEAD_LEN));
+			re_malloc(m_data_len);
+			return *this;
+		}
+		data_packet& reset()
+		{
+			m_pos = 0;
+			m_extend_data.clear();
+			return *this;
+		}
+		data_packet& start_write()
+		{
+			assert(m_pos == 0);
+			put_uint32(m_data_len);
+			put_uint32(m_op);
+			return *this;
+		}
+		data_packet& end_write()
+		{
 			assert(m_pos != 0);
 			m_data_len = m_pos;
 			m_pos = 0;
 			memcpy(m_buff, &m_data_len, DATA_HEAD_LEN);
 			memcpy(m_buff + DATA_HEAD_LEN, &m_op, DATA_OP_LEN);
+			return *this;
 		}
-		void calculate_data_len_when_read()
-		{
-			m_data_len = *((uint32*)m_buff);
-			m_op = *((uint32*)(m_buff + DATA_HEAD_LEN));
-			if (m_data_len > m_buff_len)
-			{
-				re_malloc_to(m_data_len);
-			}
-		}
-		void reset()
+		data_packet& start_read()
 		{
 			m_pos = 0;
-			m_extend_data.clear();
-		}
-		void start_write()
-		{
-			if (m_pos != 0)
-			{
-				throw("incorrect use of this function");
-			}
-			put_uint32(0);//data len
-			put_uint32(m_op);//op
-		}
-		void start_read()
-		{
-			if (m_pos != 0)
-			{
-				throw("incorrect use of this function");
-			}
-			get_uint32();
+			m_data_len = get_uint32();
 			m_op = get_uint32();
+			return *this;
 		}
 
 		data_packet& put_int_reserved(int val, int pos_reserved)
@@ -93,7 +82,7 @@ class data_packet
 		void assert_using(){ assert(m_using);}
 		void copy_from(data_packet* t_packet)
 		{
-			re_malloc_to(t_packet->get_data_len());
+			re_malloc(t_packet->get_data_len());
 			memcpy(m_buff, t_packet->get_buff(), t_packet->get_data_len());
 
 			m_pos = t_packet->m_pos;
@@ -119,43 +108,26 @@ class data_packet
 		{
 			return m_extend_data[key];
 		}
-		void put_extend_data(const char* key, const char* value)
+		data_packet& put_extend_data(const char* key, const char* value)
 		{
 			m_extend_data[key] = value;
+			return *this;
 		}
 	private:
-		void re_malloc()
+		void re_malloc(uint32 new_size = 0)
 		{
-			uint8* temp = m_buff;
-			m_buff = new uint8[m_buff_len * 2];
-			if (m_buff == NULL)
-			{
-				throw("memory Less Exception");
-			}
-			m_buff_len = m_buff_len * 2;
-			memset(m_buff, 0, m_buff_len);
-			memcpy(m_buff, temp, m_pos);
-			delete[] temp;
-		}
-		void re_malloc_to(uint32 new_size)
-		{
-			if (new_size <= m_buff_len)
-			{
-				return;
-			}
+			new_size = new_size == 0 ? m_buff_len * 2 : new_size;
+			if (new_size <= m_buff_len){ return;}
 			uint8* temp = m_buff;
 			m_buff = new uint8[new_size];
-			if (m_buff == NULL)
-			{
-				throw("memory Less Exception");
-			}
+			if (m_buff == NULL){ throw("memory Less Exception");}
 			m_buff_len = new_size;
 			memset(m_buff, 0, m_buff_len);
 			memcpy(m_buff, temp, m_pos);
 			delete[] temp;
 		}
 	public:
-		template <typename T> data_packet& put(T& value)
+		template <typename T> data_packet& put(T value)
 		{
 			assert_using();
 			while ((m_buff_len - m_pos) < sizeof(T))
@@ -166,6 +138,7 @@ class data_packet
 			m_pos += sizeof(T);
 			return *this;
 		}
+
 		template <> data_packet& put(std::string& value)
 		{
 			assert_using();
@@ -181,7 +154,7 @@ class data_packet
 			m_pos += str_len;
 			return *this;
 		}
-		template <> data_packet& put(const char* & value)
+		template <> data_packet& put(const char* value)
 		{
 			assert_using();
 			uint32 str_len = strlen(value);
@@ -200,10 +173,7 @@ class data_packet
 		template <typename T> T get()
 		{
 			assert_using();
-			if ((m_buff_len - m_pos) < sizeof(T))
-			{
-				throw("buf Less Exception");
-			}
+			if ((m_buff_len - m_pos) < sizeof(T)) throw("buf Less Exception");
 			T ret;
 			memcpy(&ret, m_buff + m_pos, sizeof(T));
 			m_pos += sizeof(T);
@@ -212,10 +182,7 @@ class data_packet
 		template <> std::string get()
 		{
 			assert_using();
-			if ((m_buff_len - m_pos) < sizeof(uint32))
-			{
-				throw("buf Less Exception");
-			}
+			if ((m_buff_len - m_pos) < sizeof(uint32)) throw("buf Less Exception");
 			uint32 str_len;
 			std::string str;
 			memcpy(&str_len, m_buff + m_pos, sizeof(uint32));

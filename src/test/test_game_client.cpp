@@ -40,9 +40,7 @@ int main()
 					{
 						printf("login res is suc\n");
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_CS_GET_BASE_INFO);
-						packet->flip();
+						packet->start_write().set_op(OP_CS_GET_BASE_INFO).end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
 
@@ -81,11 +79,7 @@ int main()
 					{
 						{
 							gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-							packet->start_write();
-							packet->set_op(OP_CS_LOGIN);
-							packet->put_string("test_account");
-							packet->put_string("test_password");
-							packet->flip();
+							packet->start_write().set_op(OP_CS_LOGIN).put("test_account").put("test_password").end_write();
 
 							my_leaf_node.get_session()->do_write(packet);
 						}

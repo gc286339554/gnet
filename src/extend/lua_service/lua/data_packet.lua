@@ -21,8 +21,8 @@ end
 function data_packet:start_write()
 	dp_start_write(self.data)
 end
-function data_packet:flip()
-	dp_flip(self.data)
+function data_packet:end_write()
+	dp_end_write(self.data)
 end
 function data_packet:put_num(val)
 	dp_put_num(self.data,val)

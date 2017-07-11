@@ -183,17 +183,15 @@ public:
 	{
 		static int index = 0;
 		data_packet* packet = g_data_packet_pool.get_data_packet();	//构造心跳包
-		packet->start_write();
-		packet->set_op(OP_HEART_BEAT_PING_PONG);
-		packet->put_uint32(index++);
-		packet->flip();
+		packet->start_write().set_op(OP_HEART_BEAT_PING_PONG).put_uint32(index++).end_write();
 		do_write(packet);
 	}
 	bool post_data_packet()
 	{
 		if (m_data_packet_p && (m_data_packet_p->get_data_len() == m_data_packet_p->get_data_pos()))
 		{// full data
-			m_data_packet_p->flip();
+			m_data_packet_p->reset();
+			m_data_packet_p->start_read();
 			//post data to right place
 			post_data_packet_handler();
 			//delete m_data_packet_p;  由消息处理着负责销毁

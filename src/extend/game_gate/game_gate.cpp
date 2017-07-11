@@ -44,11 +44,8 @@ void game_gate::server_net_msg_handler(data_packet* net_msg, uint32 sid)
 			//需要手动重新组包，比较繁琐，效率低下，后续优化
 			uint32 client_sid = net_msg->get_uint32();
 			data_packet* net_msg_to_c = g_data_packet_pool.get_data_packet();
-			net_msg_to_c->set_op(op);
-			net_msg_to_c->start_write();
-			net_msg_to_c->append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()), 
-				net_msg->get_data_len() - net_msg->get_data_pos());
-			net_msg_to_c->flip();
+			net_msg_to_c->start_write().set_op(op).append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()),
+				net_msg->get_data_len() - net_msg->get_data_pos()).end_write();
 			m_client_gate.send_msg_to_client(client_sid, net_msg_to_c);
 		}
 		else if (op > OP_SS_BEGIN && op < OP_SS_END)
@@ -144,7 +141,7 @@ void game_gate::server_session_close_handler(uint32 sid)
 		t_list->remove(sid);
 	});
 	m_server_session_info_map.erase(sid);
-	LOG(ERROR) << "server " << sid << "is closed";
+	LOG(ERROR) << "server " << sid << " is closed";
 }
 void game_gate::client_net_msg_handler(data_packet* net_msg, uint32 sid)
 {//网络线程
@@ -157,12 +154,11 @@ void game_gate::client_net_msg_handler(data_packet* net_msg, uint32 sid)
 		{
 			//需要手动重新组包，比较繁琐，效率低下，后续优化
 			data_packet* net_msg_to_s = g_data_packet_pool.get_data_packet();
-			net_msg_to_s->set_op(op);
-			net_msg_to_s->start_write();
-			net_msg_to_s->put_uint32(sid);
-			net_msg_to_s->append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()),
-				net_msg->get_data_len() - net_msg->get_data_pos());
-			net_msg_to_s->flip();
+			net_msg_to_s->set_op(op)
+				.start_write()
+				.put(sid)
+				.append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()),net_msg->get_data_len() - net_msg->get_data_pos())
+				.end_write();
 
 			thread_safe_list<uint32> * t_list = &m_server_op_route[op];
 			t_list->for_each([this, net_msg_to_s](uint32 ssid)
@@ -185,12 +181,10 @@ void game_gate::client_net_msg_handler(data_packet* net_msg, uint32 sid)
 		if (op > OP_CS_SC_BEGIN && op < OP_CS_SC_NEED_AUTH)
 		{
 			data_packet* net_msg_to_s = g_data_packet_pool.get_data_packet();
-			net_msg_to_s->set_op(op);
-			net_msg_to_s->start_write();
-			net_msg_to_s->put_uint32(sid);
-			net_msg_to_s->append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()),
-				net_msg->get_data_len() - net_msg->get_data_pos());
-			net_msg_to_s->flip();
+			net_msg_to_s->start_write().set_op(op)
+				.put_uint32(sid)
+				.append(reinterpret_cast<const uint8*>(net_msg->get_buff() + net_msg->get_data_pos()),net_msg->get_data_len() - net_msg->get_data_pos())
+				.end_write();
 
 			thread_safe_list<uint32> * t_list = &m_server_op_route[op];
 			t_list->for_each([this, net_msg_to_s](uint32 ssid)
@@ -213,10 +207,7 @@ void game_gate::client_net_msg_handler(data_packet* net_msg, uint32 sid)
 void game_gate::client_session_close_handler(uint32 sid)
 {//网络线程
 	data_packet* net_msg_to_s = g_data_packet_pool.get_data_packet();
-	net_msg_to_s->set_op(OP_GS_CLIENT_SOCKET_CLOSE);
-	net_msg_to_s->start_write();
-	net_msg_to_s->put_uint32(sid);
-	net_msg_to_s->flip();
+	net_msg_to_s->start_write().set_op(OP_GS_CLIENT_SOCKET_CLOSE).put_uint32(sid).end_write();
 
 	thread_safe_list<uint32> * t_list = &m_server_op_route[OP_GS_CLIENT_SOCKET_CLOSE];
 	t_list->for_each([this, net_msg_to_s](uint32 ssid)

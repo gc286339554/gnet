@@ -40,12 +40,9 @@ void mysql_base_server_logic::service_msg_handler(std::shared_ptr<gnet::service_
 	if (iter != m_handlers_map.end())
 	{
 		std::shared_ptr<gnet::service_msg> msg_send = std::make_shared<gnet::service_msg>();
-		msg_send->get_data_packet_p()->put_extend_data("sid", p_data->get_extend_data("sid").c_str());
-		msg_send->get_data_packet_p()->start_write();
-		msg_send->get_data_packet_p()->set_op(opcode);
-		msg_send->get_data_packet_p()->put_uint32(index);
+		msg_send->get_data_packet_p()->start_write().set_op(opcode).put_extend_data("sid", p_data->get_extend_data("sid").c_str()).put_uint32(index);
 		iter->second(p_data,msg_send->get_data_packet_p());
-		msg_send->get_data_packet_p()->flip();
+		msg_send->get_data_packet_p()->end_write();
 		//step3 返回执行结果
 		send_msg(msg_send, "mysql_gate_service");
 	}

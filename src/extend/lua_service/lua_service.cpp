@@ -2,10 +2,10 @@
 #include "../3rd/lua_tinker/lua_tinker.h"
 
 static void dp_start_write(uint64 msg_p);
+static void dp_end_write(uint64 msg_p);
 static void dp_start_read(uint64 msg_p);
 static uint32 dp_get_op(uint64 msg_p);
 static void dp_set_op(uint64 msg_p, f64 val);
-static void dp_flip(uint64 msg_p);
 static uint64 dp_malloc_data_packet();
 static void dp_free_data_packet(uint64 msg_p);
 static void dp_put_num(uint64 msg_p, f64 val);
@@ -40,7 +40,7 @@ void lua_service::init()
 	lua_tinker::def(L, "dp_start_read", dp_start_read);
 	lua_tinker::def(L, "dp_get_op", dp_get_op);
 	lua_tinker::def(L, "dp_set_op", dp_set_op);
-	lua_tinker::def(L, "dp_flip", dp_flip);
+	lua_tinker::def(L, "dp_end_write", dp_end_write);
 	lua_tinker::def(L, "dp_malloc_data_packet", dp_malloc_data_packet);
 	lua_tinker::def(L, "dp_free_data_packet", dp_free_data_packet);
 	lua_tinker::def(L, "dp_put_num", dp_put_num);
@@ -93,10 +93,10 @@ static void dp_set_op(uint64 msg_p, f64 val)
 	data_packet* msg = reinterpret_cast<data_packet*>(msg_p);
 	msg->set_op(val);
 }
-static void dp_flip(uint64 msg_p)
+static void dp_end_write(uint64 msg_p)
 {
 	data_packet* msg = reinterpret_cast<data_packet*>(msg_p);
-	msg->flip();
+	msg->end_write();
 }
 static uint64 dp_malloc_data_packet()
 {
@@ -144,9 +144,7 @@ static void dp_send_lua_msg(const char* service_name, const char* msg_table, uin
 	lua_service* t_service_this = reinterpret_cast<lua_service*>(g_service_this);
 	std::shared_ptr<gnet::service_msg> msg_sp = std::make_shared<gnet::service_msg>();
 	msg_sp->set_msg_type(msg_type_lua);
-	msg_sp->get_data_packet_p()->start_write();
-	msg_sp->get_data_packet_p()->put_string(msg_table);
-	msg_sp->get_data_packet_p()->flip();
+	msg_sp->get_data_packet_p()->start_write().put_string(msg_table).end_write();
 	t_service_this->send_msg(msg_sp, service_name);
 }
 static void dp_send_binary_msg(const char* service_name, uint64 msg_p, uint64 g_service_this)
@@ -154,7 +152,6 @@ static void dp_send_binary_msg(const char* service_name, uint64 msg_p, uint64 g_
 	lua_service* t_service_this = reinterpret_cast<lua_service*>(g_service_this);
 	data_packet* msg = reinterpret_cast<data_packet*>(msg_p);
 	std::shared_ptr<gnet::service_msg> msg_sp = std::make_shared<gnet::service_msg>(msg);
-	msg_sp->get_data_packet_p()->start_write();
-	msg_sp->get_data_packet_p()->flip();
+	msg_sp->get_data_packet_p()->start_write().end_write();
 	t_service_this->send_msg(msg_sp, service_name);
 }

@@ -51,14 +51,12 @@ bool client_session::connect()
 }
 void client_session::post_data_packet_handler()
 {
-	m_data_packet_p->start_read();
 	uint32 opcode = m_data_packet_p->get_op();//协议号
 	if (opcode == OP_HEART_BEAT_PING_PONG)
 	{//每个消息都检测，效率低下
 		g_data_packet_pool.put_data_packet(m_data_packet_p);
 		return;
 	}
-	m_data_packet_p->reset();
 	m_net_msg_handler(m_data_packet_p);
 }
 bool client_session::is_auto_reconnect()

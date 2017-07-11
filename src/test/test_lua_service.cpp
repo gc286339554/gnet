@@ -46,9 +46,7 @@ int main()
 			if (index % 1000 == 0 && index < 15000)
 			{
 				std::shared_ptr<gnet::service_msg> msg_sp = std::make_shared<gnet::service_msg>();
-				msg_sp->get_data_packet_p()->start_write();
-				msg_sp->get_data_packet_p()->put_uint32(index);
-				msg_sp->get_data_packet_p()->flip();
+				msg_sp->get_data_packet_p()->start_write().put_uint32(index).end_write();
 				send_msg(msg_sp, "lua_service");
 				char buff[128] = { 0 };
 				sprintf(buff, "%d send_msg to lua", get_service_id());

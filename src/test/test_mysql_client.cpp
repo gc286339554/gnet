@@ -55,11 +55,7 @@ public:
 	void mysql_query_time()
 	{
 		gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-		packet->start_write();
-		packet->set_op(SD_QUERY_TIME);
-		packet->put_uint32(++m_cur_callback_index);
-		packet->put_string("select NOW() as time;");
-		packet->flip();
+		packet->start_write().set_op(SD_QUERY_TIME).put_uint32(++m_cur_callback_index).put_string("select NOW() as time;").end_write();
 		m_callback_map[m_cur_callback_index] = [](gnet::data_packet* net_msg) {
 			std::string sql_result = net_msg->get_string();
 			printf("time is : %s \n", sql_result.c_str());
@@ -69,15 +65,12 @@ public:
 	void mysql_insert_data()
 	{
 		gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-		packet->start_write();
-		packet->set_op(SD_INSERT_DATA);
-		packet->put_uint32(++m_cur_callback_index);
+		packet->start_write().set_op(SD_INSERT_DATA).put_uint32(++m_cur_callback_index);
 		int random_variable = std::rand();
 		random_variable = random_variable % 256;
 		char buff[128];
 		sprintf(buff, "insert into test(`label`) VALUE(\"%d\");", random_variable);
-		packet->put_string(buff);
-		packet->flip();
+		packet->put_string(buff).end_write();
 		m_callback_map[m_cur_callback_index] = [](gnet::data_packet* net_msg) {
 			bool sql_result = net_msg->get_bool();
 			if (sql_result)
@@ -94,15 +87,12 @@ public:
 	void mysql_delete_data()
 	{
 		gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-		packet->start_write();
-		packet->set_op(SD_DELETE_DATA);
-		packet->put_uint32(++m_cur_callback_index);
+		packet->start_write().set_op(SD_DELETE_DATA).put_uint32(++m_cur_callback_index);
 		int random_variable = std::rand();
 		random_variable = random_variable % 256;
 		char buff[128];
 		sprintf(buff, "delete from test where label = \"%d\";", random_variable);
-		packet->put_string(buff);
-		packet->flip();
+		packet->put_string(buff).end_write();
 		m_callback_map[m_cur_callback_index] = [](gnet::data_packet* net_msg) {
 			int32 sql_result = net_msg->get_int32();
 			printf("delete row is %d \n", sql_result);
@@ -112,17 +102,14 @@ public:
 	void mysql_update_data()
 	{
 		gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-		packet->start_write();
-		packet->set_op(SD_UPDATE_DATA);
-		packet->put_uint32(++m_cur_callback_index);
+		packet->start_write().set_op(SD_UPDATE_DATA).put_uint32(++m_cur_callback_index);
 		int random_variable = std::rand();
 		random_variable = random_variable % 256;
 		int random_variable01 = std::rand();
 		random_variable01 = random_variable01 % 256;
 		char buff[128];
 		sprintf(buff, "update test set label = \"%d\" where label = \"%d\";", random_variable, random_variable01);
-		packet->put_string(buff);
-		packet->flip();
+		packet->put_string(buff).end_write();
 		m_callback_map[m_cur_callback_index] = [](gnet::data_packet* net_msg) {
 			int32 sql_result = net_msg->get_int32();
 			printf("update row is %d \n", sql_result);
@@ -132,11 +119,7 @@ public:
 	void mysql_query_data()
 	{
 		gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-		packet->start_write();
-		packet->set_op(SD_QUERY_DATA);
-		packet->put_uint32(++m_cur_callback_index);
-		packet->put_string("select count(*) from test;");
-		packet->flip();
+		packet->start_write().set_op(SD_QUERY_DATA).put_uint32(++m_cur_callback_index).put_string("select count(*) from test;").end_write();
 		m_callback_map[m_cur_callback_index] = [](gnet::data_packet* net_msg) {
 			int32 sql_result = net_msg->get_int32();
 			printf("row count is %d \n", sql_result);

@@ -14,7 +14,6 @@ void server_session::set_server_session_mgr(std::shared_ptr<server_session_mgr>&
 }
 void server_session::post_data_packet_handler()
 {
-	m_data_packet_p->start_read();
 	uint32 opcode = m_data_packet_p->get_op();//协议号
 	if (opcode == OP_HEART_BEAT_PING_PONG)
 	{//每个消息都检测，效率低下
@@ -22,7 +21,6 @@ void server_session::post_data_packet_handler()
 		send_heart_beat();
 		return;
 	}
-	m_data_packet_p->reset();
 	m_net_msg_handler(m_data_packet_p, m_session_id);
 }
 void server_session::timeout_check()

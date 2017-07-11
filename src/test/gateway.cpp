@@ -88,10 +88,7 @@ int main()
 			if (index % 5000 == 0)
 			{
 				gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-				packet->start_write();
-				packet->set_op(100);
-				packet->put_uint32(index);
-				packet->flip();
+				packet->start_write().set_op(100).put_uint32(index).end_write();
 
 				m_my_gateway.send_msg_to_client(m_last_session,packet);
 			}
@@ -126,9 +123,7 @@ int main()
 			if (index % 5000 == 0)
 			{
 				std::shared_ptr<gnet::service_msg> msg_sp = std::make_shared<gnet::service_msg>();
-				msg_sp->get_data_packet_p()->start_write();
-				msg_sp->get_data_packet_p()->put_uint32(index);
-				msg_sp->get_data_packet_p()->flip();
+				msg_sp->get_data_packet_p()->start_write().put_uint32(index).end_write();
 				send_msg(msg_sp, "main_service_gateway");
 			}
 			

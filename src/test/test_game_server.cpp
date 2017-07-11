@@ -39,35 +39,21 @@ int main()
 				{
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SG_CLIENT_AUTH);
-						packet->put_uint32(sid);
-						packet->put_bool(true);
-						packet->flip();
-
+						packet->start_write().set_op(OP_SG_CLIENT_AUTH).put(sid).put(true).end_write();
 						my_leaf_node.get_session()->do_write(packet);
 					}
 
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SC_LOGIN);
-						packet->put_uint32(sid);
-						packet->put_bool(true);
-						packet->flip();
-
+						packet->start_write().set_op(OP_SC_LOGIN).put(sid).put(true).end_write();
 						my_leaf_node.get_session()->do_write(packet);
 					}
 				}
 				else if (op == OP_CS_GET_BASE_INFO)
 				{
 					gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-					packet->start_write();
-					packet->set_op(OP_SC_GET_BASE_INFO);
-					packet->put_uint32(sid);
-					packet->put_string("da ge");
-					packet->put_string("man");
-					packet->flip();
+					packet->start_write().set_op(OP_SC_GET_BASE_INFO).put_uint32(sid).put_string("da ge").put_string("man");
+					packet->end_write();
 
 					my_leaf_node.get_session()->do_write(packet);
 				}
@@ -107,24 +93,21 @@ int main()
 					/**/
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SG_AUTH);
-						packet->put_string("auth");
-						packet->flip();
+						packet->start_write().set_op(OP_SG_AUTH).put_string("auth").end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
 					}
 					
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SG_REG_LISTEN_OP);
-						packet->put_uint32(3);
-						packet->put_uint32(OP_CS_LOGIN);
-						packet->put_uint32(OP_CS_GET_BASE_INFO);
-						packet->put_uint32(OP_SS_HELLO);
-
-						packet->flip();
+						packet->start_write().set_op(OP_SG_REG_LISTEN_OP);
+						std::vector<uint32> op_list = { OP_CS_LOGIN ,OP_CS_GET_BASE_INFO,OP_SS_HELLO };
+						packet->put_uint32(op_list.size());
+						for (uint32 opcode : op_list)
+						{
+							packet->put_uint32(opcode);
+						}
+						packet->end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
 					}
@@ -140,10 +123,7 @@ int main()
 			if (false && (looper%1000 == 0))
 			{
 				gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-				packet->start_write();
-				packet->set_op(OP_SS_HELLO);
-				packet->put_string("Hello");
-				packet->flip();
+				packet->start_write().set_op(OP_SS_HELLO).put_string("Hello").end_write();
 
 				my_leaf_node.get_session()->do_write(packet);
 			}
@@ -211,21 +191,14 @@ int main()
 				{
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SG_AUTH);
-						packet->put_string("auth");
-						packet->flip();
+						packet->start_write().set_op(OP_SG_AUTH).put_string("auth").end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
 					}
 
 					{
 						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-						packet->start_write();
-						packet->set_op(OP_SG_REG_LISTEN_OP);
-						packet->put_uint32(1);
-						packet->put_uint32(OP_SS_HELLO);
-						packet->flip();
+						packet->start_write().set_op(OP_SG_REG_LISTEN_OP).put_uint32(1).put_uint32(OP_SS_HELLO).end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
 					}
@@ -240,10 +213,7 @@ int main()
 			if (false && (looper % 2000 == 0))
 			{
 				gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-				packet->start_write();
-				packet->set_op(OP_SS_HELLO);
-				packet->put_string("Hello");
-				packet->flip();
+				packet->start_write().set_op(OP_SS_HELLO).put_string("Hello").end_write();
 
 				my_leaf_node.get_session()->do_write(packet);
 			}

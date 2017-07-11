@@ -49,11 +49,7 @@ int main()
 			if (index % 10000 == 0)
 			{
 				gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
-				packet->start_write();
-				packet->set_op(100);
-				packet->put_uint32(index);
-				packet->flip();
-
+				packet->start_write().set_op(100).put_uint32(index).end_write();
 				my_leaf_node.get_session()->do_write(packet);
 			}
 		};

@@ -44,15 +44,23 @@ class data_packet_pool : public singleton<data_packet_pool>
 			std::lock_guard<std::mutex> lock(m_free_data_packet_list_lock);
 #ifdef _DEBUG
 			/*for test*/
-			for (auto obj : m_free_data_packet_list)
+			/*for (auto obj : m_free_data_packet_list)
 			{
 				if (obj == packet) assert(false);
-			}
+			}*/
 			/*for test*/
 #endif // _DEBUG
-			m_free_data_packet_list.push_back(packet);
-			packet->set_using(false);
-			m_put_count++;
+			if (m_free_data_packet_list.size() > 100)
+			{
+				SAFE_DEL(packet);
+				m_put_count++;
+			}
+			else
+			{
+				m_free_data_packet_list.push_back(packet);
+				packet->set_using(false);
+				m_put_count++;
+			}
 		}
 
 	private:

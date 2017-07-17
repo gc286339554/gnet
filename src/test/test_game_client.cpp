@@ -16,11 +16,12 @@ int main()
 	{
 	public:
 		std::atomic<bool> m_is_connected = false;
+		std::atomic<bool> m_is_auth = false;
 		bool m_last_connect_state = false;
 		gnet::leaf_node  my_leaf_node;
 		main_game_client(const char* service_name) :
 			gnet::service(service_name),
-			my_leaf_node("127.0.0.1", 9528, 10005)
+			my_leaf_node("127.0.0.1", 9528, 5)
 		{
 			std::function<void(gnet::data_packet*)> handler = std::bind(&main_game_client::net_msg_handler, this, std::placeholders::_1);
 			my_leaf_node.set_net_msg_handler(handler);
@@ -43,6 +44,8 @@ int main()
 						packet->start_write().set_op(OP_CS_GET_BASE_INFO).end_write();
 
 						my_leaf_node.get_session()->do_write(packet);
+
+						m_is_auth = true;
 
 					}	
 					else
@@ -89,14 +92,32 @@ int main()
 				{
 				}
 			}
+
+			if (m_is_connected && m_is_auth)
+			{
+				if (rand() % 100 == rand() % 100)
+				{
+					if (my_leaf_node.get_session()->get_send_list_size() < 10)
+					{
+						gnet::data_packet* packet = g_data_packet_pool.get_data_packet();
+						packet->start_write().set_op(OP_CS_GET_BASE_INFO).end_write();
+						my_leaf_node.get_session()->do_write(packet);
+					}
+				}
+			}
 		};
 		virtual void service_msg_handler(std::shared_ptr<gnet::service_msg>& msg_sp)
 		{
 		};
 	};
 
-
-	mgr.add_service(std::make_shared<main_game_client>("main_game_client"));
+	char buff[125] = {0};
+	for (size_t i = 0; i < 1000; i++)
+	{
+		sprintf(buff,"main_game_client_%d",i);
+		mgr.add_service(std::make_shared<main_game_client>(buff));
+	}
+	//mgr.add_service(std::make_shared<main_game_client>("main_game_client"));
 	mgr.start();
 
 	getchar();

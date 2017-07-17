@@ -91,7 +91,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GOOGLE_GLOG_DLL_DECL=;ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GOOGLE_GLOG_DLL_DECL=;ASIO_HAS_BOOST_DATE_TIME;ASIO_HAS_STD_TYPE_TRAITS;ASIO_HAS_CSTDINT;ASIO_HAS_STD_ADDRESSOF;ASIO_HAS_STD_ARRAY;ASIO_STANDALONE;ASIO_HAS_STD_SHARED_PTR;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\src\commom\net\asio\;..\..\src\commom\;..\..\src\3rd\;..\..\src\3rd\log\glog-0.3.3\src\windows\;</AdditionalIncludeDirectories>
     </ClCompile>

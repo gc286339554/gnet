@@ -26,6 +26,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_mysql_server", "test_m
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_mysql_client", "test_mysql_client\test_mysql_client.vcxproj", "{E093AFC0-4404-4F86-A917-F54F2E80FF49}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C6D6549-FBAA-4226-9B7E-600862C55ACC} = {8C6D6549-FBAA-4226-9B7E-600862C55ACC}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_game_gate", "test_game_gate\test_game_gate.vcxproj", "{E29018D5-AD7B-43DE-B947-FC13EABD14EB}"
 	ProjectSection(ProjectDependencies) = postProject

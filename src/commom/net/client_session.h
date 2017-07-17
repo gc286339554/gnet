@@ -17,6 +17,7 @@ private:
 	std::atomic_bool										m_do_heart_beat = true;
 public:
 	client_session(const char* ip, uint32 port, uint32 timeout, bool auto_reconnect = true);
+	virtual ~client_session();
 	void stop();
 	void start();
 	bool connect();

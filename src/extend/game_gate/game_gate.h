@@ -116,6 +116,8 @@ namespace gnet {
 		void set_gate_id(uint32 gid);
 		void set_auth(std::string p_auth);
 
+		void packet_statistics();
+
 	private:
 		uint32 m_client_port;//开放给客户端的端口
 		uint32 m_server_port;//开放给服务端的端口
@@ -132,5 +134,8 @@ namespace gnet {
 		
 		uint32 m_gate_id;
 		std::string m_auth;
+
+		std::atomic<uint64> m_packet_count;
+		std::chrono::steady_clock::time_point m_start_time = std::chrono::steady_clock::now();
 	};
 };

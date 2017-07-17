@@ -62,6 +62,12 @@ public:
 			}
 		} while (0);
 	}
+	uint32 get_send_list_size()
+	{
+		std::unique_lock<std::mutex> lock(m_send_list_lock);
+		return m_send_list.size();
+	}
+	
 	virtual void start()
 	{
 		init_session_id();

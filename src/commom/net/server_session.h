@@ -15,6 +15,7 @@ private:
 	std::function<void(data_packet*, uint32)>	m_net_msg_handler;
 public:
 	server_session(uint32 timeout);
+	virtual ~server_session();
 	void post_data_packet_handler();
 	void timeout_check();
 	void set_server_session_mgr(std::shared_ptr<server_session_mgr>& server_session_mgr_sp);

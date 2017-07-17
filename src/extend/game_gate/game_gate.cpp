@@ -31,9 +31,21 @@ void game_gate::start()
 	m_server_gate.start();
 	m_client_gate.start();
 }
+void game_gate::packet_statistics()
+{
+	m_packet_count++;
+	if (0 == (rand() % 1000))
+	{
+		uint64 t_count = m_packet_count;
+		std::chrono::steady_clock::time_point this_time = std::chrono::steady_clock::now();
+		uint64 packet_count_pre_second = m_packet_count / std::chrono::duration_cast<std::chrono::seconds>(this_time - m_start_time).count();
+		LOG(INFO) << packet_count_pre_second << " packets transported per-second";
+	}
+}
 
 void game_gate::server_net_msg_handler(data_packet* net_msg, uint32 sid)
 {//网络线程
+	packet_statistics();
 	net_msg->start_read();
 	server_session_info* info = &m_server_session_info_map[sid];
 	uint32 op = net_msg->get_op();
@@ -145,6 +157,7 @@ void game_gate::server_session_close_handler(uint32 sid)
 }
 void game_gate::client_net_msg_handler(data_packet* net_msg, uint32 sid)
 {//网络线程
+	packet_statistics();
 	net_msg->start_read();
 	uint32 op = net_msg->get_op();
 	client_session_info* info = &m_client_session_info_map[sid];

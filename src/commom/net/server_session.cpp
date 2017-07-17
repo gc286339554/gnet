@@ -7,6 +7,9 @@ server_session::server_session(uint32 timeout)
 :base_session(timeout)
 {
 }
+server_session::~server_session()
+{
+}
 void server_session::set_server_session_mgr(std::shared_ptr<server_session_mgr>& server_session_mgr_sp)
 {
 	m_server_session_mgr_sp = server_session_mgr_sp;

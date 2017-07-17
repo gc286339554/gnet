@@ -20,7 +20,7 @@ int main()
 		gnet::leaf_node  my_leaf_node;
 		main_game_server_01(const char* service_name) :
 			gnet::service(service_name),
-			my_leaf_node("127.0.0.1", 9527, 10000)
+			my_leaf_node("127.0.0.1", 9527, 5)
 		{
 			std::function<void(gnet::data_packet*)> handler = std::bind(&main_game_server_01::net_msg_handler, this, std::placeholders::_1);
 			my_leaf_node.set_net_msg_handler(handler);
@@ -141,7 +141,7 @@ int main()
 		gnet::leaf_node  my_leaf_node;
 		main_game_server_02(const char* service_name) :
 			gnet::service(service_name),
-			my_leaf_node("127.0.0.1", 9527, 10000)
+			my_leaf_node("127.0.0.1", 9527, 5)
 		{
 			std::function<void(gnet::data_packet*)> handler = std::bind(&main_game_server_02::net_msg_handler, this, std::placeholders::_1);
 			my_leaf_node.set_net_msg_handler(handler);

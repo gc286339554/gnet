@@ -9,6 +9,9 @@ m_auto_reconnect(auto_reconnect),
 m_endpoint(asio::ip::address_v4::from_string(ip), port)
 {
 }
+client_session::~client_session()
+{
+}
 void client_session::close_socket()
 {
 	base_session::close_socket();

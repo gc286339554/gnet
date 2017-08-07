@@ -14,15 +14,15 @@ protected:
 	std::chrono::steady_clock::time_point	m_last_packet_time;//上次收到数据的时间点
 	asio::ip::tcp::socket					m_socket;
 	std::mutex								m_send_list_lock;
-	bool									m_is_sending = false;	
 	uint8									m_buf_read[BUF_READ_SIZE];
-	uint32									m_temp_size = 0;
+	uint32									m_cur_bytes_read = 0;
 	uint32									m_session_id = 0;
 	uint32									m_timeout = 10;
 	data_packet*							m_data_packet_p = nullptr;
 	std::list<data_packet*>					m_send_list;
 	asio::deadline_timer					m_timeout_monitor;
 	std::atomic_bool						m_timeout_monitor_finish = true;
+	std::atomic_bool						m_is_sending = false;
 public:
 	virtual void post_data_packet_handler() = 0;
 	virtual void timeout_check() = 0;
@@ -45,7 +45,7 @@ public:
 		{
 			g_data_packet_pool.put_data_packet(m_data_packet_p);
 			m_data_packet_p = nullptr;
-			m_temp_size = 0;
+			m_cur_bytes_read = 0;
 			m_is_sending = false;
 		}
 
@@ -133,7 +133,7 @@ public:
 	}
 	void do_read()
 	{
-		m_socket.async_read_some(asio::buffer(m_buf_read + m_temp_size, BUF_READ_SIZE - m_temp_size),
+		m_socket.async_read_some(asio::buffer(m_buf_read + m_cur_bytes_read, BUF_READ_SIZE - m_cur_bytes_read),
 			std::bind(&base_session::handle_read,
 				shared_from_this(),
 				std::placeholders::_1,
@@ -141,11 +141,11 @@ public:
 	}
 	void format_data_packet()
 	{
-		if (m_temp_size > 0)
+		if (m_cur_bytes_read > 0)
 		{
 			if (!m_data_packet_p)
 			{
-				if (m_temp_size >= (DATA_HEAD_LEN + DATA_OP_LEN))
+				if (m_cur_bytes_read >= (DATA_HEAD_LEN + DATA_OP_LEN))
 				{
 					uint32 len = *((uint32*)m_buf_read);
 					if (len > DATA_MAX_LEN)
@@ -154,33 +154,33 @@ public:
 						return;
 					}
 					m_data_packet_p = g_data_packet_pool.get_data_packet();
-					m_data_packet_p->append(m_buf_read, std::min(len, m_temp_size));
+					m_data_packet_p->append(m_buf_read, std::min(len, m_cur_bytes_read));
 					m_data_packet_p->calculate_data_len_when_read();
 
-					if (len < m_temp_size)
+					if (len < m_cur_bytes_read)
 					{
-						memcpy(m_buf_read, m_buf_read + len, m_temp_size - len);
-						m_temp_size = m_temp_size - len;
+						memcpy(m_buf_read, m_buf_read + len, m_cur_bytes_read - len);
+						m_cur_bytes_read = m_cur_bytes_read - len;
 					}
 					else
 					{
-						m_temp_size = 0;
+						m_cur_bytes_read = 0;
 					}
 				}
 			}
 			else
 			{
 				uint32 leftData = m_data_packet_p->get_data_len() - m_data_packet_p->get_data_pos();
-				m_data_packet_p->append(m_buf_read, std::min(leftData, m_temp_size));
+				m_data_packet_p->append(m_buf_read, std::min(leftData, m_cur_bytes_read));
 
-				if (leftData < m_temp_size)
+				if (leftData < m_cur_bytes_read)
 				{
-					memcpy(m_buf_read, m_buf_read + leftData, m_temp_size - leftData);
-					m_temp_size = m_temp_size - leftData;
+					memcpy(m_buf_read, m_buf_read + leftData, m_cur_bytes_read - leftData);
+					m_cur_bytes_read = m_cur_bytes_read - leftData;
 				}
 				else
 				{
-					m_temp_size = 0;
+					m_cur_bytes_read = 0;
 				}
 			}
 		}
@@ -214,7 +214,7 @@ public:
 			m_last_packet_time = std::chrono::steady_clock::now();
 			try
 			{
-				m_temp_size = bytes_read + m_temp_size;
+				m_cur_bytes_read = bytes_read + m_cur_bytes_read;
 				do
 				{
 					format_data_packet();
